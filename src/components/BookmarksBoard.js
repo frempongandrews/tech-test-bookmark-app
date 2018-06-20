@@ -40,6 +40,37 @@ export default class BookmarksBoard extends Component {
         currentBookmarkId: null
     };
 
+    componentWillMount () {
+
+      let bookmarks = [];
+
+      //retrieving bookmarks from localStorage
+
+        //create if there isn't any in localStorage
+      if (JSON.parse(localStorage.getItem('bookmarks') === null)) {
+
+          bookmarks = [];
+
+          localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+
+          this.setState({
+              bookmarks
+          });
+
+      }
+
+
+      //else get it
+      bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+
+      this.setState({
+          bookmarks
+      });
+
+
+
+    };
+
     onAddBookmark = () => {
 
         let url = this.urlInput.value.trim();
@@ -48,6 +79,11 @@ export default class BookmarksBoard extends Component {
 
         let newBookmark = new Bookmark(id, url, description);
         let bookmarks = this.state.bookmarks.concat(newBookmark);
+
+
+
+        //saving to localStorage
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
 
         //page re-renders at every change of state
         this.setState({
@@ -122,6 +158,8 @@ export default class BookmarksBoard extends Component {
             }
         });
 
+        //save to localStorage
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
 
         //empty input values
         this.onClearInputFields();
