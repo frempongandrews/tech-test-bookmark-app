@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import './css/BookmarksBoard.css'
 import BookmarkItem from './BookmarkItem';
 
+//Bookmark object
+
+function Bookmark(id, url, description) {
+    this.id = id;
+    this.url = url;
+    this.description = description;
+}
+
 const data = [
     // {
     //     id: 0,
@@ -32,8 +40,24 @@ export default class BookmarksBoard extends Component {
 
     onAddBookmark = () => {
 
-        console.log('adding bookmark');
+        let url = this.urlInput.value.trim();
+        let description = this.descriptionInput.value.trim();
+        let id = this.state.bookmarks.length;
 
+        let newBookmark = new Bookmark(id, url, description);
+        let bookmarks = this.state.bookmarks.concat(newBookmark);
+
+        //page re-renders at every change of state
+        this.setState({
+            bookmarks
+        }, this.onClearInputFields());
+
+    };
+
+    onClearInputFields = () => {
+
+        this.urlInput.value = '';
+        this.descriptionInput.value = '';
     };
 
 
@@ -76,7 +100,7 @@ export default class BookmarksBoard extends Component {
                         </div>
 
                     </div>
-                    <input style={inputStyle} placeholder='Please insert url...' ref={input => this.nameInput = input}/>
+                    <input style={inputStyle} placeholder='Please insert url...' ref={input => this.urlInput = input}/>
                     <input style={inputStyle} placeholder='Description...' ref={input => this.descriptionInput = input}/>
 
                 </div>
@@ -100,7 +124,8 @@ const bookmarksBoardStyle = {
     // height: '80vh',
     border: '1px solid grey',
     margin: '0 auto',
-    minWidth: 200
+    minWidth: 200,
+    marginBottom:20
 };
 
 const headerStyle = {

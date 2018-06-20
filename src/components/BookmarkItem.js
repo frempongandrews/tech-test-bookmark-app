@@ -5,6 +5,8 @@ export default class BookmarkItem extends Component {
 
     render () {
 
+        let {id, url, description} = this.props;
+
         return (
             <div style={bookmarkItemContainer}>
 
@@ -13,11 +15,11 @@ export default class BookmarkItem extends Component {
 
 
                 <div>
-                    <h3>url link here</h3>
+                    <h3>{url}</h3>
                 </div>
 
                 <div>
-                    <p>url description here</p>
+                    <p>{description}</p>
                 </div>
 
             </div>
