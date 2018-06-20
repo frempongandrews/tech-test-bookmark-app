@@ -111,6 +111,7 @@ export default class BookmarksBoard extends Component {
 
     onAddBookmark = () => {
 
+
         let errors = [];
 
         let url = this.urlInput.value.trim();
@@ -119,14 +120,27 @@ export default class BookmarksBoard extends Component {
         // let id = this.state.bookmarks.length;
 
 
-        if (!this.isValidUrl(url)) {
-            errors.push('Please insert a valid url');
-            this.setState({
-                errors
-            });
+
+        //TODO: show modal instead of default alert
+        // if (!this.isValidUrl(url)) {
+        //     errors.push('Please insert a valid url');
+        //     this.setState({
+        //         errors
+        //     });
+        // }
+
+
+        if (!description) {
+            alert("Please enter a description.");
+            return;
         }
 
-        if (this.isValidUrl(url) && description.length > 3) {
+        if (description.length < 3) {
+            alert("Description must be at least 3 characters long");
+            return;
+        }
+
+        if (this.isValidUrl(url)) {
 
 
 
