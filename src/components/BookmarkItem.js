@@ -32,7 +32,7 @@ export default class BookmarkItem extends Component {
 
 
                 <div>
-                    <h3>{url}</h3>
+                    <h3><a href={url} target='_blank'>{url}</a></h3>
                 </div>
 
                 <div>
@@ -50,6 +50,7 @@ const bookmarkItemContainer = {
 
     border: '1px solid grey',
     width: '80%',
+    overflow: 'auto',
     position: 'relative',
     margin: '10px auto',
     borderRadius: 10,

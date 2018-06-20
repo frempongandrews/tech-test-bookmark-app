@@ -37,7 +37,8 @@ export default class BookmarksBoard extends Component {
 
         bookmarks: [],
         isEditing: false,
-        currentBookmarkId: null
+        currentBookmarkId: null,
+        errors: []
     };
 
     componentWillMount () {
@@ -71,24 +72,83 @@ export default class BookmarksBoard extends Component {
 
     };
 
+    isValidUrl = (url) => {
+        let regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+        if(!regex .test(url)) {
+            alert("Please enter valid URL.");
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    generateId = () => {
+
+        let existingIds = this.state.bookmarks.map(bookmark => {
+            return bookmark.id;
+        });
+
+        let max = 0;
+
+
+
+        let len = existingIds.length;
+
+        for (let i = 0;  i < len; i++) {
+
+            if (existingIds[i] > max) {
+                max = existingIds[i];
+            }
+        }
+
+        //return the max and add 1
+        //will always be unique
+        return max + 1;
+
+
+
+    };
+
     onAddBookmark = () => {
+
+        let errors = [];
 
         let url = this.urlInput.value.trim();
         let description = this.descriptionInput.value;
-        let id = this.state.bookmarks.length;
-
-        let newBookmark = new Bookmark(id, url, description);
-        let bookmarks = this.state.bookmarks.concat(newBookmark);
+        let id = (this.state.bookmarks.length === 0) ? 0 : this.generateId();
+        // let id = this.state.bookmarks.length;
 
 
+        if (!this.isValidUrl(url)) {
+            errors.push('Please insert a valid url');
+            this.setState({
+                errors
+            });
+        }
 
-        //saving to localStorage
-        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        if (this.isValidUrl(url) && description.length > 3) {
 
-        //page re-renders at every change of state
-        this.setState({
-            bookmarks
-        }, this.onClearInputFields());
+
+
+            let newBookmark = new Bookmark(id, url, description);
+            let bookmarks = this.state.bookmarks.concat(newBookmark);
+
+
+
+            //saving to localStorage
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+
+            //page re-renders at every change of state
+            this.setState({
+                bookmarks
+            }, this.onClearInputFields());
+
+
+
+        }
+
+
+
 
     };
 
@@ -186,7 +246,8 @@ export default class BookmarksBoard extends Component {
         localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
 
         this.setState({
-            bookmarks
+            bookmarks,
+            currentBookmarkId: null
         }, this.onClearInputFields());
 
 
