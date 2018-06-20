@@ -136,7 +136,7 @@ export default class BookmarksBoard extends Component {
             //set current item id in state to null
             this.setState({
                 currentBookmarkId: null
-            });
+            }, this.onClearInputFields());
         }
 
     };
@@ -175,6 +175,23 @@ export default class BookmarksBoard extends Component {
 
     };
 
+    onRemoveBookmark = () => {
+
+        let bookmarks = this.state.bookmarks.filter(bookmark => {
+            return bookmark.id !== this.state.currentBookmarkId;
+        });
+
+
+        //save to localStorage
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+
+        this.setState({
+            bookmarks
+        }, this.onClearInputFields());
+
+
+    };
+
     onCancelEditing = () => {
 
         this.setState({
@@ -186,6 +203,7 @@ export default class BookmarksBoard extends Component {
     };
 
     onClearInputFields = () => {
+
 
         this.urlInput.value = '';
         this.descriptionInput.value = '';
@@ -229,20 +247,23 @@ export default class BookmarksBoard extends Component {
                     <h3>Super Bookmarks</h3>
                     <div style={controlsContainerStyle}>
 
+
                         {this.state.isEditing &&
                             <div style={cancelRemoveBtnContainer}>
-                                <button style={btnStyle} onClick={this.onCancelEditing}>Cancel</button><button style={btnStyle}>Remove</button>
+                                {this.state.isEditing &&<button style={btnStyle} onClick={this.onCancelEditing}>Cancel</button>} { (this.state.currentBookmarkId !== null) && <button style={btnStyle} onClick={this.onRemoveBookmark}>Remove</button>}
                             </div>
                         }
+
 
 
                         <div style={editAddBtnContainer}>
                             {this.state.bookmarks.length > 0 && !this.state.isEditing && <button style={btnStyle} onClick={this.onEditing}>Edit</button>}
                             {!this.state.isEditing && <button style={btnStyle} onClick={this.onAddBookmark}>Add</button>}
-                            {this.state.isEditing && <button style={btnStyle} onClick={this.submitEdit}>Submit Changes</button>}
+                            {this.state.currentBookmarkId !== null && <button style={btnStyle} onClick={this.submitEdit}>Submit Changes</button>}
                         </div>
 
                     </div>
+
                     <input style={inputStyle} placeholder='Please insert url...' ref={input => this.urlInput = input}/>
                     <input style={inputStyle} placeholder='Description...' ref={input => this.descriptionInput = input}/>
 
@@ -287,7 +308,6 @@ const inputStyle = {
 const controlsContainerStyle ={
     width: '100%',
     margin: '15px auto',
-    backgroundColor: 'green',
     display: 'flex',
     flexWrap: 'wrap',
     overflow: 'hidden'
