@@ -387,6 +387,7 @@ const editAddBtnContainer = {
 };
 
 const btnStyle = {
-  flex: '1 0 100px'
+  flex: '1 0 100px',
+  cursor: 'pointer'
 };
 
