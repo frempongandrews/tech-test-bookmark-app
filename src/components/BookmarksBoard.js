@@ -247,6 +247,7 @@ export default class BookmarksBoard extends Component {
 
         this.setState({
             bookmarks,
+            isEditing: false,
             currentBookmarkId: null
         }, this.onClearInputFields());
 
