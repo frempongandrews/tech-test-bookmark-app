@@ -77,6 +77,23 @@ export default class BookmarksBoard extends Component {
             this.setState({
                 currentBookmarkId: id
             });
+
+            //get values of selected bookmark in input fields
+            let selectedBookmark = this.state.bookmarks.filter(bookmark => {
+
+                return bookmark.id === id;
+
+            })[0];
+
+            console.log(selectedBookmark);
+
+            this.urlInput.value = selectedBookmark.url;
+            this.descriptionInput.value = selectedBookmark.description;
+
+
+
+
+
         }
 
         if(!isSelected) {
@@ -88,6 +105,12 @@ export default class BookmarksBoard extends Component {
 
     };
 
+    submitEdit = () => {
+
+        console.log('submitting changes');
+
+    };
+
     onCancelEditing = () => {
 
         this.setState({
@@ -95,7 +118,7 @@ export default class BookmarksBoard extends Component {
             currentBookmarkId: null
         });
 
-        //todo: issue with multiple checkboxes being selected
+        this.onClearInputFields();
     };
 
     onClearInputFields = () => {
@@ -139,7 +162,7 @@ export default class BookmarksBoard extends Component {
             <div style={bookmarksBoardStyle}>
 
                 <div style={headerStyle}>
-                    <h3>Board</h3>
+                    <h3>Super Bookmarks</h3>
                     <div style={controlsContainerStyle}>
 
                         {this.state.isEditing &&
@@ -150,8 +173,9 @@ export default class BookmarksBoard extends Component {
 
 
                         <div style={editAddBtnContainer}>
-                            {this.state.bookmarks.length > 0 && <button style={btnStyle} onClick={this.onEditing}>Edit</button>}
+                            {this.state.bookmarks.length > 0 && !this.state.isEditing && <button style={btnStyle} onClick={this.onEditing}>Edit</button>}
                             {!this.state.isEditing && <button style={btnStyle} onClick={this.onAddBookmark}>Add</button>}
+                            {this.state.isEditing && <button style={btnStyle} onClick={this.submitEdit}>Submit Changes</button>}
                         </div>
 
                     </div>
