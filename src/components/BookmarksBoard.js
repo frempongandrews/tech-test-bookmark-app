@@ -36,13 +36,14 @@ export default class BookmarksBoard extends Component {
     state = {
 
         bookmarks: [],
-        isEditing: false
+        isEditing: false,
+        currentBookmarkId: null
     };
 
     onAddBookmark = () => {
 
         let url = this.urlInput.value.trim();
-        let description = this.descriptionInput.value.trim();
+        let description = this.descriptionInput.value;
         let id = this.state.bookmarks.length;
 
         let newBookmark = new Bookmark(id, url, description);
@@ -68,11 +69,33 @@ export default class BookmarksBoard extends Component {
 
     };
 
+    onEditBookmark = (id, isSelected) => {
+
+
+        if (isSelected) {
+            //set current item id in state
+            this.setState({
+                currentBookmarkId: id
+            });
+        }
+
+        if(!isSelected) {
+            //set current item id in state to null
+            this.setState({
+                currentBookmarkId: null
+            });
+        }
+
+    };
+
     onCancelEditing = () => {
 
         this.setState({
-            isEditing: false
+            isEditing: false,
+            currentBookmarkId: null
         });
+
+        //todo: test on cancel for current item id
     };
 
     onClearInputFields = () => {
@@ -87,6 +110,8 @@ export default class BookmarksBoard extends Component {
 
     render () {
 
+        console.log(this.state);
+
         //to no repeat this.state.bookmarks
         let { bookmarks } = this.state;
 
@@ -97,7 +122,8 @@ export default class BookmarksBoard extends Component {
                 id: bookmark.id,
                 url: bookmark.url,
                 description: bookmark.description,
-                isEditing: this.state.isEditing
+                isEditing: this.state.isEditing,
+                onEditBookmark: this.onEditBookmark
             };
 
             return (
