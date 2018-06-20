@@ -108,6 +108,32 @@ export default class BookmarksBoard extends Component {
     submitEdit = () => {
 
         console.log('submitting changes');
+        //grab input value
+        let url = this.urlInput.value;
+        let description = this.descriptionInput.value;
+        //get bookmark with id of state.currentBookmarkId
+        let bookmarks = this.state.bookmarks;
+
+        //update its values
+        bookmarks.forEach(bookmark => {
+            if (bookmark.id === this.state.currentBookmarkId) {
+                bookmark.url = url;
+                bookmark.description = description
+            }
+        });
+
+
+        //empty input values
+        this.onClearInputFields();
+
+        //exit editing state
+        //reset bookmarks
+        this.setState({
+            bookmarks,
+            isEditing: false,
+            currentBookmarkId: null
+        });
+
 
     };
 
