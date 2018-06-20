@@ -5,13 +5,13 @@ export default class BookmarkItem extends Component {
 
     render () {
 
-        let {id, url, description} = this.props;
+        let {id, url, description, isEditing} = this.props;
 
         return (
             <div style={bookmarkItemContainer}>
 
+                {isEditing && <input type="checkbox" id="checkbox" />}
 
-                <input type="checkbox" id="checkbox" />
 
 
                 <div>

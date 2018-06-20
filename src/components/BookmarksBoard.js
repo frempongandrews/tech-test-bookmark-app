@@ -35,7 +35,8 @@ export default class BookmarksBoard extends Component {
 
     state = {
 
-        bookmarks: []
+        bookmarks: [],
+        isEditing: false
     };
 
     onAddBookmark = () => {
@@ -54,11 +55,33 @@ export default class BookmarksBoard extends Component {
 
     };
 
+    onEditing = () => {
+
+
+        //can go in edit mode only when there are items on screen
+        if (this.state.bookmarks.length > 0) {
+            this.setState({
+                isEditing: true
+            });
+        }
+
+
+    };
+
+    onCancelEditing = () => {
+
+        this.setState({
+            isEditing: false
+        });
+    };
+
     onClearInputFields = () => {
 
         this.urlInput.value = '';
         this.descriptionInput.value = '';
     };
+
+
 
 
 
@@ -73,7 +96,8 @@ export default class BookmarksBoard extends Component {
             let props = {
                 id: bookmark.id,
                 url: bookmark.url,
-                description: bookmark.description
+                description: bookmark.description,
+                isEditing: this.state.isEditing
             };
 
             return (
@@ -91,12 +115,16 @@ export default class BookmarksBoard extends Component {
                     <h3>Board</h3>
                     <div style={controlsContainerStyle}>
 
-                        <div style={cancelRemoveBtnContainer}>
-                            <button style={btnStyle}>Cancel</button><button style={btnStyle}>Remove</button>
-                        </div>
+                        {this.state.isEditing &&
+                            <div style={cancelRemoveBtnContainer}>
+                                <button style={btnStyle} onClick={this.onCancelEditing}>Cancel</button><button style={btnStyle}>Remove</button>
+                            </div>
+                        }
+
 
                         <div style={editAddBtnContainer}>
-                            <button style={btnStyle}>Edit</button><button style={btnStyle} onClick={this.onAddBookmark}>Add</button>
+                            {this.state.bookmarks.length > 0 && <button style={btnStyle} onClick={this.onEditing}>Edit</button>}
+                            {!this.state.isEditing && <button style={btnStyle} onClick={this.onAddBookmark}>Add</button>}
                         </div>
 
                     </div>
