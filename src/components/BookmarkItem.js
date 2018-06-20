@@ -13,19 +13,21 @@ export default class BookmarkItem extends Component {
         //set id to current selected item id on main state
         //depending on value of checkbox
 
-            this.props.onEditBookmark(id, selected);
+        this.props.onEditBookmark(id, selected);
+
 
 
     };
 
     render () {
 
-        let {id, url, description, isEditing} = this.props;
+        let {id, url, description, isEditing, currentBookmarkId} = this.props;
 
         return (
             <div style={bookmarkItemContainer}>
 
-                {isEditing && <input onChange={e=> this.editBookmark(id, e)} type="checkbox" id="checkbox" />}
+                {isEditing && <input onChange={e=> this.editBookmark(id, e)} type="checkbox" id="checkbox"
+                checked={(currentBookmarkId === id)}/>}
 
 
 

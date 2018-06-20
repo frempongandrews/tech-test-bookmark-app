@@ -95,7 +95,7 @@ export default class BookmarksBoard extends Component {
             currentBookmarkId: null
         });
 
-        //todo: test on cancel for current item id
+        //todo: issue with multiple checkboxes being selected
     };
 
     onClearInputFields = () => {
@@ -123,7 +123,8 @@ export default class BookmarksBoard extends Component {
                 url: bookmark.url,
                 description: bookmark.description,
                 isEditing: this.state.isEditing,
-                onEditBookmark: this.onEditBookmark
+                onEditBookmark: this.onEditBookmark,
+                currentBookmarkId: this.state.currentBookmarkId
             };
 
             return (
