@@ -38,7 +38,7 @@ export default class BookmarksBoard extends Component {
         bookmarks: [],
         isEditing: false,
         currentBookmarkId: null,
-        errors: []
+
     };
 
     componentWillMount () {
@@ -224,27 +224,45 @@ export default class BookmarksBoard extends Component {
         //get bookmark with id of state.currentBookmarkId
         let bookmarks = this.state.bookmarks;
 
-        //update its values
-        bookmarks.forEach(bookmark => {
-            if (bookmark.id === this.state.currentBookmarkId) {
-                bookmark.url = url;
-                bookmark.description = description
-            }
-        });
 
-        //save to localStorage
-        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
 
-        //empty input values
-        this.onClearInputFields();
+        if (!description) {
+            alert("Please enter a description.");
+            return;
+        }
 
-        //exit editing state
-        //reset bookmarks
-        this.setState({
-            bookmarks,
-            isEditing: false,
-            currentBookmarkId: null
-        });
+        if (description.length < 3) {
+            alert("Description must be at least 3 characters long");
+            return;
+        }
+
+
+
+        if (this.isValidUrl(url)) {
+
+            //update its values
+            bookmarks.forEach(bookmark => {
+                if (bookmark.id === this.state.currentBookmarkId) {
+                    bookmark.url = url;
+                    bookmark.description = description
+                }
+            });
+
+            //save to localStorage
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+
+            //empty input values
+            this.onClearInputFields();
+
+            //exit editing state
+            //reset bookmarks
+            this.setState({
+                bookmarks,
+                isEditing: false,
+                currentBookmarkId: null
+            });
+
+        }
 
 
     };
@@ -265,6 +283,21 @@ export default class BookmarksBoard extends Component {
             currentBookmarkId: null
         }, this.onClearInputFields());
 
+
+    };
+
+    onClearAllBookmarks = () => {
+
+        let bookmarks = [];
+
+        //save to localStorage
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+
+        this.setState({
+            bookmarks,
+            isEditing: false,
+            currentBookmarkId: null
+        }, this.onClearInputFields());
 
     };
 
@@ -327,9 +360,9 @@ export default class BookmarksBoard extends Component {
                         {this.state.isEditing &&
                             <div style={cancelRemoveBtnContainer}>
                                 {this.state.isEditing &&<button style={btnStyle} onClick={this.onCancelEditing}>Cancel</button>} { (this.state.currentBookmarkId !== null) && <button style={btnStyle} onClick={this.onRemoveBookmark}>Remove</button>}
+                                { (this.state.currentBookmarkId === null) && <button style={btnStyle} onClick={this.onClearAllBookmarks}>Clear All</button>}
                             </div>
                         }
-
 
 
                         <div style={editAddBtnContainer}>
@@ -361,15 +394,19 @@ export default class BookmarksBoard extends Component {
 const bookmarksBoardStyle = {
 
     width: '80%',
-    // height: '80vh',
+    height: '95vh',
+    overflowY: 'auto',
     border: '1px solid grey',
     margin: '0 auto',
     minWidth: 200,
-    marginBottom:20
+    marginBottom:20,
+    position: 'relative'
 };
 
 const headerStyle = {
-    marginBottom: 30
+    marginBottom: 30,
+    zIndex: 100,
+
 };
 
 const inputStyle = {

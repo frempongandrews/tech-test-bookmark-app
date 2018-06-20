@@ -48,7 +48,7 @@ export default class BookmarkItem extends Component {
 
 const bookmarkItemContainer = {
 
-    border: '1px solid grey',
+    border: '1px solid #777777',
     width: '80%',
     overflow: 'auto',
     position: 'relative',
