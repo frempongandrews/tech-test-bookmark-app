@@ -396,7 +396,7 @@ const bookmarksBoardStyle = {
     width: '80%',
     height: '95vh',
     overflowY: 'auto',
-    border: '1px solid grey',
+    // border: '1px solid grey',
     margin: '0 auto',
     minWidth: 200,
     marginBottom:20,
@@ -439,6 +439,7 @@ const editAddBtnContainer = {
 
 const btnStyle = {
   flex: '1 0 100px',
-  cursor: 'pointer'
+  cursor: 'pointer',
+    color: '#777777'
 };
 

@@ -32,11 +32,11 @@ export default class BookmarkItem extends Component {
 
 
                 <div>
-                    <h3><a href={url} target='_blank'>{url}</a></h3>
+                    <h3><a href={url} target='_blank' style={linkStyle}>{url}</a></h3>
                 </div>
 
                 <div>
-                    <p>{description}</p>
+                    <p style={descriptionStyle}>{description}</p>
                 </div>
 
             </div>
@@ -56,4 +56,13 @@ const bookmarkItemContainer = {
     borderRadius: 10,
     padding: 10
 
+};
+
+const descriptionStyle={
+    color: '#586069'
+};
+
+const linkStyle = {
+  textDecoration: 'none',
+  color: '#0366d6'
 };
